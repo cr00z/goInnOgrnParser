@@ -1,0 +1,4 @@
+github.com/jackdanger/collectlinks v0.0.0-20160421202702-24c4ee2870ba h1:FW3g6RfPxRHYFxOAVxad/eKiga8mVEh2YVtD/+FKEr4=
+github.com/jackdanger/collectlinks v0.0.0-20160421202702-24c4ee2870ba/go.mod h1:GFVNbU+5FcSghGENDCIOpeTGmhv1IgGDKnViO9DtCbI=
+golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b h1:ZmngSVLe/wycRns9MKikG9OWIEjGcGAkacif7oYQaUY=
+golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
