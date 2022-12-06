@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"strconv"
@@ -101,7 +101,6 @@ func NewHttpClient() *http.Client {
 }
 
 func retrieveAttempt(httpClient *http.Client, url string, path string, proto string) (string, error) {
-	//httpClient = NewHttpClient()
 	req, err := http.NewRequest("GET", proto+url+path, nil)
 	// TODO: Response errors: 4xx, 5xx
 	if err != nil {
@@ -115,7 +114,7 @@ func retrieveAttempt(httpClient *http.Client, url string, path string, proto str
 	if res.StatusCode >= 400 {
 		return "", errors.New("Response " + strconv.Itoa(res.StatusCode))
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", fmt.Errorf("read error: %s", err)
 	}

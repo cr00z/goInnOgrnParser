@@ -3,7 +3,7 @@ package options
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 )
@@ -60,10 +60,10 @@ func ParseOptions() {
 	flag.Parse()
 
 	if !verbose {
-		ILog.SetOutput(ioutil.Discard)
-		ELog.SetOutput(ioutil.Discard)
+		ILog.SetOutput(io.Discard)
+		ELog.SetOutput(io.Discard)
 		if silence {
-			PLog.SetOutput(ioutil.Discard)
+			PLog.SetOutput(io.Discard)
 		}
 	}
 }

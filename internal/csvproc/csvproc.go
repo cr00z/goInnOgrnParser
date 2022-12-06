@@ -30,10 +30,11 @@ type Info struct {
 	Error    string
 }
 
-func ReadAll(fileName string, records *[]Record) error {
+func ReadAll(fileName string) ([]*Record, error) {
+	records := make([]*Record, 0)
 	file, err := os.Open(fileName)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer file.Close()
 
@@ -43,7 +44,7 @@ func ReadAll(fileName string, records *[]Record) error {
 	// skip first
 	_, err = reader.Read()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for {
@@ -51,7 +52,7 @@ func ReadAll(fileName string, records *[]Record) error {
 		if err != nil {
 			break
 		}
-		*records = append(*records, Record{
+		records = append(records, &Record{
 			Id: record[0],
 			/*
 				...
@@ -66,10 +67,10 @@ func ReadAll(fileName string, records *[]Record) error {
 			*/
 		})
 	}
-	return nil
+	return records, nil
 }
 
-func WriteAll(fileName string, records *[]Record, info *map[string]Info) (int, error) {
+func WriteAll(fileName string, records []*Record, info map[string]Info) (int, error) {
 	title := []string{
 		// main
 		"id" /* ...truncated... */, "web", /* ...truncated... */
@@ -92,7 +93,7 @@ func WriteAll(fileName string, records *[]Record, info *map[string]Info) (int, e
 	}
 
 	count := 0
-	for _, record := range *records {
+	for _, record := range records {
 		writeStr := make([]string, 0)
 		recordVal := reflect.ValueOf(record)
 		for field := 0; field < recordVal.NumField(); field++ {
@@ -100,7 +101,7 @@ func WriteAll(fileName string, records *[]Record, info *map[string]Info) (int, e
 		}
 
 		addInfo := make([]string, 5)
-		if val, isOk := (*info)[record.Id]; isOk {
+		if val, isOk := info[record.Id]; isOk {
 			addInfo = []string{
 				val.MainINN,
 				val.MainOGRN,

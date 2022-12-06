@@ -34,9 +34,9 @@ type Work struct {
 	Body     string
 }
 
-func (allUrls *UrlQueue) MakeUrlQueue(records *[]csvproc.Record) {
+func (allUrls *UrlQueue) MakeUrlQueue(records []*csvproc.Record) {
 	allUrls.Queue = list.New()
-	for _, record := range *records {
+	for _, record := range records {
 		primary := true
 		for _, url := range strings.Split(record.Web, ",") {
 			url := strings.TrimSuffix(url, "/")

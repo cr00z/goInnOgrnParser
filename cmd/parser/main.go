@@ -31,9 +31,9 @@ var processFn = func(args interface{}) (interface{}, error) {
 	return work, err
 }
 
-func ProcessNumbers(numbers map[string]int, info *map[string]csvproc.Info, id string, primary bool) int {
+func ProcessNumbers(numbers map[string]int, info map[string]csvproc.Info, id string, primary bool) int {
 	founded := 0
-	infoRecord, isOk := (*info)[id]
+	infoRecord, isOk := info[id]
 	if !isOk {
 		infoRecord = csvproc.Info{
 			AddINN:  []string{},
@@ -58,12 +58,12 @@ func ProcessNumbers(numbers map[string]int, info *map[string]csvproc.Info, id st
 			founded++
 		}
 	}
-	(*info)[id] = infoRecord
+	info[id] = infoRecord
 	return founded
 }
 
-func ProcessError(err error, info *map[string]csvproc.Info, id string) {
-	infoRecord, isOk := (*info)[id]
+func ProcessError(err error, info map[string]csvproc.Info, id string) {
+	infoRecord, isOk := info[id]
 	if !isOk {
 		infoRecord = csvproc.Info{
 			AddINN:  []string{},
@@ -71,7 +71,7 @@ func ProcessError(err error, info *map[string]csvproc.Info, id string) {
 		}
 	}
 	infoRecord.Error = crawler.HTTPErrorToString(err)
-	(*info)[id] = infoRecord
+	info[id] = infoRecord
 }
 
 func processQueue(allUrls *urlqueue.UrlQueue, interChan chan<- workerpool.Task, queueChan chan<- bool,
@@ -96,7 +96,7 @@ func processQueue(allUrls *urlqueue.UrlQueue, interChan chan<- workerpool.Task, 
 	}
 }
 
-func getResultFn(allUrls *urlqueue.UrlQueue, info *map[string]csvproc.Info) workerpool.ResultFunction {
+func getResultFn(allUrls *urlqueue.UrlQueue, info map[string]csvproc.Info) workerpool.ResultFunction {
 	return func(args interface{}) {
 		removeRecord := false
 		result := args.(workerpool.Result)
@@ -141,7 +141,6 @@ func getResultFn(allUrls *urlqueue.UrlQueue, info *map[string]csvproc.Info) work
 			"Finished work %d, left %d urls [ %d paths ]\n",
 			result.ID, allUrls.Queue.Len(), options.TotalLinks,
 		)
-		// removeRecord = false
 	}
 }
 
@@ -149,18 +148,16 @@ func main() {
 	options.ParseOptions()
 	start := time.Now()
 	httpClient = crawler.NewHttpClient()
-
-	records := make([]csvproc.Record, 0)
 	info := map[string]csvproc.Info{}
 
-	err := csvproc.ReadAll(options.InputCSVFile, &records)
+	records, err := csvproc.ReadAll(options.InputCSVFile)
 	if err != nil {
 		log.Fatalf("ReadAll error: %s", err)
 	}
 	options.PLog.Printf("Read file '%s', read %d records\n", options.InputCSVFile, len(records))
 
 	var allUrls urlqueue.UrlQueue
-	allUrls.MakeUrlQueue(&records)
+	allUrls.MakeUrlQueue(records)
 	options.TotalLinks = allUrls.Queue.Len()
 	options.PLog.Printf("Processed file '%s', read %d urls\n", options.InputCSVFile, options.TotalLinks)
 
@@ -172,7 +169,7 @@ func main() {
 	time.Sleep(time.Second)
 
 	queueChan := make(chan bool, 1)
-	go processQueue(&allUrls, pool.GetInterChan(), queueChan, getResultFn(&allUrls, &info))
+	go processQueue(&allUrls, pool.GetInterChan(), queueChan, getResultFn(&allUrls, info))
 
 	termChan := make(chan os.Signal, 1)
 	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
@@ -194,7 +191,7 @@ func main() {
 	pool.WaitResults()
 	options.PLog.Println("All workers done, shutting done!")
 
-	count, err := csvproc.WriteAll(options.OutputCSVFile, &records, &info)
+	count, err := csvproc.WriteAll(options.OutputCSVFile, records, info)
 	if err != nil {
 		log.Fatalf("WriteAll error: %s", err)
 	} else {

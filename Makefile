@@ -4,7 +4,7 @@ GOVER=$(shell go version | perl -nle '/(go\d\S+)/; print $$1;')
 SMARTIMPORTS=${BINDIR}/smartimports_${GOVER}
 LINTVER=v1.49.0
 LINTBIN=${BINDIR}/lint_${GOVER}_${LINTVER}
-PACKAGE=github.com/cr00z/goInnOgrnParser
+PACKAGE=github.com/cr00z/goInnOgrnParser/cmd/parser
 
 all: format build test lint
 
