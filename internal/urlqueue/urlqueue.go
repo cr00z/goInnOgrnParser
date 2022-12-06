@@ -1,12 +1,12 @@
 package urlqueue
 
 import (
-	"github.com/cr00z/goInnOgrnParser/csvproc"
-
 	"container/list"
 	"runtime"
 	"strings"
 	"sync"
+
+	"github.com/cr00z/goInnOgrnParser/internal/csvproc"
 )
 
 type UrlRecord struct {

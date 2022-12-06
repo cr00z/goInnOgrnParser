@@ -1,9 +1,6 @@
 package crawler
 
 import (
-	"github.com/cr00z/goInnOgrnParser/options"
-	"github.com/jackdanger/collectlinks"
-
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -13,6 +10,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cr00z/goInnOgrnParser/internal/options"
+	"github.com/jackdanger/collectlinks"
 )
 
 func CollectLinks(url string, body string) []string {

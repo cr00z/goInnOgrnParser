@@ -1,13 +1,6 @@
 package main
 
 import (
-	"github.com/cr00z/goInnOgrnParser/crawler"
-	"github.com/cr00z/goInnOgrnParser/csvproc"
-	"github.com/cr00z/goInnOgrnParser/innogrn"
-	"github.com/cr00z/goInnOgrnParser/options"
-	"github.com/cr00z/goInnOgrnParser/urlqueue"
-	"github.com/cr00z/goInnOgrnParser/workerpool"
-
 	"context"
 	"errors"
 	"log"
@@ -17,6 +10,13 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/cr00z/goInnOgrnParser/internal/crawler"
+	"github.com/cr00z/goInnOgrnParser/internal/csvproc"
+	"github.com/cr00z/goInnOgrnParser/internal/innogrn"
+	"github.com/cr00z/goInnOgrnParser/internal/options"
+	"github.com/cr00z/goInnOgrnParser/internal/urlqueue"
+	"github.com/cr00z/goInnOgrnParser/internal/workerpool"
 )
 
 var httpClient *http.Client
@@ -141,7 +141,7 @@ func getResultFn(allUrls *urlqueue.UrlQueue, info *map[string]csvproc.Info) work
 			"Finished work %d, left %d urls [ %d paths ]\n",
 			result.ID, allUrls.Queue.Len(), options.TotalLinks,
 		)
-		removeRecord = false
+		// removeRecord = false
 	}
 }
 

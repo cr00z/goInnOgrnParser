@@ -78,16 +78,18 @@ func WriteAll(fileName string, records *[]Record, info *map[string]Info) (int, e
 	}
 
 	file, err := os.Create(fileName)
-	defer file.Close()
 	if err != nil {
 		return 0, err
 	}
+	defer file.Close()
 
 	writer := csv.NewWriter(file)
 	writer.Comma = ','
 	defer writer.Flush()
 
-	writer.Write(title)
+	if err = writer.Write(title); err != nil {
+		return 0, err
+	}
 
 	count := 0
 	for _, record := range *records {

@@ -1,12 +1,12 @@
 package workerpool
 
 import (
-	"github.com/cr00z/goInnOgrnParser/options"
-
 	"context"
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/cr00z/goInnOgrnParser/internal/options"
 )
 
 type Pool struct {

@@ -14,7 +14,7 @@ Realised:
 
 First run:
 
-`go build && ./goInnOgrnParser -i ../data/part.csv -o ../data/out.csv`
+`./goInnOgrnParser -i ../data/part.csv -o ../data/out.csv`
 
 Help:
 
@@ -64,7 +64,7 @@ Examples:
 
 1. Все похожее на ИНН/ОГРН (много мусора), парсинг только стартовой страницы
 
-`go build && ./goInnOgrnParser -a -d 1 -i ../data/part.csv -o ../data/test_d1a.csv -t 43200 -v -w 250`
+`./goInnOgrnParser -a -d 1 -i ../data/part.csv -o ../data/test_d1a.csv -t 43200 -v -w 250`
 
 ```
 INFO	2022/09/07 12:11:54 Finished work 117698, left 0 urls [ 0 paths ]
@@ -74,7 +74,7 @@ INFO	2022/09/07 12:12:03 Took ================> 40m26.305081978s
 
 2. Парсинг только стартовой страницы, на которой есть "ИНН" или "ОГРН"
 
-`go build && ./goInnOgrnParser -d 1 -f -i ../data/part.csv -o ../data/test_d1.csv -t 43200 -v -w 250`
+`./goInnOgrnParser -d 1 -f -i ../data/part.csv -o ../data/test_d1.csv -t 43200 -v -w 250`
 
 ```
 INFO	2022/09/07 12:55:54 Founded 5274 results (5 %)
@@ -83,7 +83,7 @@ INFO	2022/09/07 12:55:54 Took ================> 38m46.764405031s
 
 3. Все похожее на ИНН/ОГРН (много мусора), ссылки до третьего уровня
 
-`go build && ./goInnOgrnParser -a -d 3 -f -h 30 -i ../data/part.csv -o ../data/test_d3a.csv -t 43200 -v -w 1000`
+`./goInnOgrnParser -a -d 3 -f -h 30 -i ../data/part.csv -o ../data/test_d3a.csv -t 43200 -v -w 1000`
 
 ```
 INFO  2022/09/07 14:15:52 Finished work 987893, left 16071 urls [ 3736288 paths ]
